@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+/* CSS variables for dynamic theming (dark = default) */
+:root {
+	--palette-bg: rgb(20 20 20);
+	--palette-surface: rgb(30 30 30);
+	--palette-border: rgb(44 44 44);
+	--palette-cream: rgb(232 224 208);
+	--palette-olive: rgb(122 125 74);
+	--palette-amber: rgb(196 145 58);
+}
+
+[data-theme="light"] {
+	--palette-bg: rgb(245 242 237);
+	--palette-surface: rgb(234 230 224);
+	--palette-border: rgb(212 206 198);
+	--palette-cream: rgb(26 25 22);
+	--palette-olive: rgb(90 96 48);
+	--palette-amber: rgb(168 116 40);
+}
+
+/* Tailwind v4 theme — inline so tokens resolve to CSS variables at runtime */
+@theme inline {
+	--color-bg: var(--palette-bg);
+	--color-surface: var(--palette-surface);
+	--color-border: var(--palette-border);
+	--color-cream: var(--palette-cream);
+	--color-olive: var(--palette-olive);
+	--color-amber: var(--palette-amber);
+	--font-family-heading: var(--font-cormorant), serif;
+	--font-family-body: var(--font-jost), sans-serif;
+}
+
+body {
+	background: var(--palette-bg);
+	color: var(--palette-cream);
+	font-family: var(--font-jost), sans-serif;
+	overflow-x: hidden;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
+}
+
+/* Scroll indicator animation */
+@keyframes pulse-line {
+	0%,
+	100% {
+		opacity: 0.4;
+		transform: scaleY(0.6);
+	}
+	50% {
+		opacity: 1;
+		transform: scaleY(1);
+	}
+}
+
+.scroll-line {
+	animation: pulse-line 2.4s ease-in-out infinite;
+	transform-origin: top center;
+}
+
+/* Vignette overlay for hero */
+.vignette {
+	background: radial-gradient(
+		ellipse at center,
+		transparent 0%,
+		color-mix(in srgb, var(--palette-bg) 40%, transparent) 50%,
+		color-mix(in srgb, var(--palette-bg) 85%, transparent) 100%
+	);
+}
