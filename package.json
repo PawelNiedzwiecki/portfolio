@@ -1,12 +1,12 @@
 {
-	"name": "sleepy-weirdo-portfolio",
+	"name": "portfolio",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-"lint": "biome check .",
+		"lint": "biome check .",
 		"format": "biome format --write .",
 		"test": "vitest run",
 		"test:watch": "vitest"
@@ -19,7 +19,7 @@
 		"react-dom": "^19"
 	},
 	"devDependencies": {
-"@biomejs/biome": "^2.4.6",
+		"@biomejs/biome": "^2.4.6",
 		"@tailwindcss/postcss": "^4",
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
