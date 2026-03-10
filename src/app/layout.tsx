@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
 import "./globals.css";
@@ -40,6 +41,7 @@ export default function RootLayout({
 			<body
 				className={`${cormorant.variable} ${jost.variable} font-body antialiased`}
 			>
+				<Analytics />
 				{children}
 			</body>
 		</html>
