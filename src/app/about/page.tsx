@@ -83,33 +83,13 @@ export default function About() {
 
 					{/* Right: image placeholder */}
 					<div className="relative">
-						{/*
-              Replace this placeholder with your image:
-              - Add your photo to /public/images/
-              - Replace the div below with:
-                <Image
-                  src="/images/portrait.jpg"
-                  alt="Portrait"
-                  fill
-                  className="object-cover"
-                />
-            */}
-						<div className="relative aspect-[3/4] w-full overflow-hidden bg-surface">
-							{/* Uncomment and update src when you have your image ready: */}
-							{/* <Image
-                src="/images/portrait.jpg"
-                alt="Portrait"
-                fill
-                className="object-cover"
-              /> */}
-
-							{/* Placeholder label — remove once image is added */}
-							<div className="absolute inset-0 flex flex-col items-center justify-center gap-3 border border-dashed border-cream/10">
-								<div className="h-8 w-8 rounded-full border border-cream/20" />
-								<span className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/20">
-									Your photo here
-								</span>
-							</div>
+						<div className="relative aspect-3/4 w-full overflow-hidden bg-surface">
+							<Image
+								src="/images/portraits/man-flannel-shirt-indoor-closeup.jpg"
+								alt="Portrait"
+								fill
+								className="object-cover"
+							/>
 						</div>
 
 						{/* Decorative caption */}
