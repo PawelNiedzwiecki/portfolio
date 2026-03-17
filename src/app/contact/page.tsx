@@ -1,75 +1,443 @@
+"use client";
+
 import Link from "next/link";
+import { useCallback, useRef, useState } from "react";
+
+type FieldState = "idle" | "focused" | "filled" | "error";
+
+interface Field {
+	name: string;
+	email: string;
+	subject: string;
+	message: string;
+}
+
+interface FieldErrors {
+	name?: string;
+	email?: string;
+	subject?: string;
+	message?: string;
+}
+
+function FloatingInput({
+	id,
+	label,
+	type = "text",
+	value,
+	onChange,
+	error,
+	autoComplete,
+}: {
+	id: keyof Field;
+	label: string;
+	type?: string;
+	value: string;
+	onChange: (val: string) => void;
+	error?: string;
+	autoComplete?: string;
+}) {
+	const [state, setState] = useState<FieldState>("idle");
+
+	const handleFocus = () => setState("focused");
+	const handleBlur = () => setState(value ? "filled" : "idle");
+
+	const isFloated = state === "focused" || value;
+	const hasError = !!error;
+
+	return (
+		<div className="contact-field group relative">
+			<div
+				className={`relative border-b transition-all duration-500 ${
+					hasError
+						? "border-red-400/60"
+						: state === "focused"
+							? "border-amber"
+							: "border-cream/15 group-hover:border-cream/25"
+				}`}
+			>
+				<label
+					htmlFor={id}
+					className={`pointer-events-none absolute left-0 transition-all duration-300 ease-out ${
+						isFloated
+							? "top-0 text-[9px] tracking-[0.4em]"
+							: "top-4 text-[12px] tracking-[0.2em]"
+					} font-light uppercase ${
+						hasError
+							? "text-red-400/70"
+							: state === "focused"
+								? "text-amber"
+								: "text-cream/30"
+					}`}
+				>
+					{label}
+				</label>
+				<input
+					id={id}
+					name={id}
+					type={type}
+					value={value}
+					autoComplete={autoComplete}
+					onFocus={handleFocus}
+					onBlur={handleBlur}
+					onChange={(e) => onChange(e.target.value)}
+					className="w-full bg-transparent pb-3 pt-6 text-[13px] font-extralight tracking-wide text-cream outline-none placeholder-transparent"
+				/>
+
+				{/* Focus line sweep */}
+				<span
+					className={`absolute bottom-0 left-0 h-px bg-amber transition-all duration-500 ease-out ${
+						state === "focused" ? "w-full" : "w-0"
+					}`}
+				/>
+			</div>
+
+			{/* Error message */}
+			<div
+				className={`overflow-hidden transition-all duration-300 ${hasError ? "max-h-6 pt-1.5" : "max-h-0"}`}
+			>
+				<p className="text-[10px] tracking-[0.15em] text-red-400/70">{error}</p>
+			</div>
+		</div>
+	);
+}
+
+function FloatingTextarea({
+	id,
+	label,
+	value,
+	onChange,
+	error,
+}: {
+	id: keyof Field;
+	label: string;
+	value: string;
+	onChange: (val: string) => void;
+	error?: string;
+}) {
+	const [state, setState] = useState<FieldState>("idle");
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+	const handleFocus = () => setState("focused");
+	const handleBlur = () => setState(value ? "filled" : "idle");
+
+	const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		onChange(e.target.value);
+		// Auto-grow
+		const el = e.target;
+		el.style.height = "auto";
+		el.style.height = `${el.scrollHeight}px`;
+	};
+
+	const isFloated = state === "focused" || value;
+	const hasError = !!error;
+
+	return (
+		<div className="contact-field group relative">
+			<div
+				className={`relative border-b transition-all duration-500 ${
+					hasError
+						? "border-red-400/60"
+						: state === "focused"
+							? "border-amber"
+							: "border-cream/15 group-hover:border-cream/25"
+				}`}
+			>
+				<label
+					htmlFor={id}
+					className={`pointer-events-none absolute left-0 transition-all duration-300 ease-out ${
+						isFloated
+							? "top-0 text-[9px] tracking-[0.4em]"
+							: "top-4 text-[12px] tracking-[0.2em]"
+					} font-light uppercase ${
+						hasError
+							? "text-red-400/70"
+							: state === "focused"
+								? "text-amber"
+								: "text-cream/30"
+					}`}
+				>
+					{label}
+				</label>
+				<textarea
+					ref={textareaRef}
+					id={id}
+					name={id}
+					rows={1}
+					value={value}
+					onFocus={handleFocus}
+					onBlur={handleBlur}
+					onChange={handleChange}
+					style={{ minHeight: "52px", resize: "none", overflow: "hidden" }}
+					className="w-full bg-transparent pb-3 pt-6 text-[13px] font-extralight leading-relaxed tracking-wide text-cream outline-none placeholder-transparent"
+				/>
+
+				{/* Focus line sweep */}
+				<span
+					className={`absolute bottom-0 left-0 h-px bg-amber transition-all duration-500 ease-out ${
+						state === "focused" ? "w-full" : "w-0"
+					}`}
+				/>
+			</div>
+
+			<div
+				className={`overflow-hidden transition-all duration-300 ${hasError ? "max-h-6 pt-1.5" : "max-h-0"}`}
+			>
+				<p className="text-[10px] tracking-[0.15em] text-red-400/70">{error}</p>
+			</div>
+		</div>
+	);
+}
 
 export default function Contact() {
+	const [fields, setFields] = useState<Field>({
+		name: "",
+		email: "",
+		subject: "",
+		message: "",
+	});
+	const [errors, setErrors] = useState<FieldErrors>({});
+	const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
+
+	const setField = useCallback(
+		(key: keyof Field) => (val: string) => {
+			setFields((prev) => ({ ...prev, [key]: val }));
+			if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
+		},
+		[errors],
+	);
+
+	const validate = (): boolean => {
+		const newErrors: FieldErrors = {};
+		if (!fields.name.trim()) newErrors.name = "Your name is required";
+		if (!fields.email.trim()) newErrors.email = "Email address is required";
+		else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
+			newErrors.email = "Please enter a valid email";
+		if (!fields.message.trim()) newErrors.message = "A message is required";
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!validate()) return;
+		setStatus("submitting");
+		// Simulate network delay
+		await new Promise((r) => setTimeout(r, 1400));
+		setStatus("sent");
+	};
+
 	return (
 		<main className="min-h-screen bg-bg text-cream">
-			{/* ─── CONTENT ─── */}
-			<div className="mx-auto max-w-2xl px-8 pb-24 pt-40 md:px-12">
-				{/* Eyebrow */}
-				<p className="text-[10px] font-light uppercase tracking-[0.35em] text-amber">
-					Contact
-				</p>
+			<div className="mx-auto max-w-2xl px-8 pb-32 pt-40 md:px-12">
 
-				<h1 className="mt-5 font-heading text-5xl font-light leading-none tracking-wide text-cream md:text-7xl">
-					Get in <span className="italic">touch</span>
-				</h1>
+				{/* ─── HEADER ─── */}
+				<div
+					className="contact-header"
+					style={{
+						animation: "fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
+					}}
+				>
+					<p className="text-[10px] font-light uppercase tracking-[0.35em] text-amber">
+						Contact
+					</p>
 
-				<p className="mt-6 text-[13px] font-extralight leading-relaxed tracking-wide text-cream/50">
-					For commissions, collaborations, or just to say hello — fill out the
-					form below and I&apos;ll get back to you.
-				</p>
+					<h1 className="mt-5 font-heading text-5xl font-light leading-none tracking-wide text-cream md:text-7xl">
+						Let&apos;s <span className="italic">talk</span>
+					</h1>
 
-				{/* Divider */}
-				<div className="mt-10 h-px w-16 bg-amber/40" />
+					<p className="mt-6 max-w-sm text-[13px] font-extralight leading-relaxed tracking-wide text-cream/50">
+						For commissions, collaborations, or just to say hello — I&apos;m
+						always open to a good conversation.
+					</p>
 
-				{/* Form */}
-				<form className="mt-12 flex flex-col gap-8">
-					<div className="flex flex-col gap-2">
-						<label className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/40">
-							Name
-						</label>
-						<input
-							type="text"
-							name="name"
-							placeholder="Your name"
-							className="border-b border-cream/15 bg-transparent pb-3 text-[13px] font-extralight tracking-wide text-cream placeholder-cream/20 outline-none transition-colors duration-300 focus:border-cream/40"
+					<div className="mt-10 h-px w-16 bg-amber/40" />
+				</div>
+
+				{/* ─── FORM or SUCCESS ─── */}
+				{status === "sent" ? (
+					<div
+						className="mt-16 flex flex-col items-start gap-6"
+						style={{
+							animation: "fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both",
+						}}
+					>
+						{/* Check mark */}
+						<div className="relative flex h-14 w-14 items-center justify-center">
+							<div className="absolute inset-0 rounded-full border border-amber/30" />
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								className="h-5 w-5 text-amber"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+							>
+								<title>Success</title>
+								<path
+									d="M5 12l4 4L19 7"
+									stroke="currentColor"
+									strokeWidth="1.5"
+									style={{
+										strokeDasharray: 24,
+										strokeDashoffset: 0,
+										animation: "drawCheck 0.5s 0.2s ease-out both",
+									}}
+								/>
+							</svg>
+						</div>
+
+						<div>
+							<p className="font-heading text-3xl font-light italic text-cream">
+								Message sent.
+							</p>
+							<p className="mt-3 text-[13px] font-extralight leading-relaxed tracking-wide text-cream/45">
+								I&apos;ll get back to you as soon as possible. In the meantime,
+								feel free to browse my work.
+							</p>
+						</div>
+
+						<div className="mt-4 flex items-center gap-8">
+							<Link
+								href="/work"
+								className="text-[11px] font-light uppercase tracking-[0.25em] text-amber/70 transition-colors duration-300 hover:text-amber"
+							>
+								View work
+							</Link>
+							<button
+								type="button"
+								onClick={() => {
+									setStatus("idle");
+									setFields({ name: "", email: "", subject: "", message: "" });
+								}}
+								className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
+							>
+								Send another
+							</button>
+						</div>
+					</div>
+				) : (
+					<form
+						onSubmit={handleSubmit}
+						noValidate
+						className="mt-14 flex flex-col gap-10"
+						style={{
+							animation:
+								"fadeSlideUp 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both",
+						}}
+					>
+						{/* Row: Name + Email */}
+						<div className="grid gap-10 sm:grid-cols-2">
+							<FloatingInput
+								id="name"
+								label="Your name"
+								value={fields.name}
+								onChange={setField("name")}
+								error={errors.name}
+								autoComplete="name"
+							/>
+							<FloatingInput
+								id="email"
+								label="Email address"
+								type="email"
+								value={fields.email}
+								onChange={setField("email")}
+								error={errors.email}
+								autoComplete="email"
+							/>
+						</div>
+
+						{/* Subject */}
+						<FloatingInput
+							id="subject"
+							label="Subject — commission, collaboration, other"
+							value={fields.subject}
+							onChange={setField("subject")}
+							error={errors.subject}
 						/>
-					</div>
 
-					<div className="flex flex-col gap-2">
-						<label className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/40">
-							Email
-						</label>
-						<input
-							type="email"
-							name="email"
-							placeholder="your@email.com"
-							className="border-b border-cream/15 bg-transparent pb-3 text-[13px] font-extralight tracking-wide text-cream placeholder-cream/20 outline-none transition-colors duration-300 focus:border-cream/40"
+						{/* Message */}
+						<FloatingTextarea
+							id="message"
+							label="Your message"
+							value={fields.message}
+							onChange={setField("message")}
+							error={errors.message}
 						/>
-					</div>
 
-					<div className="flex flex-col gap-2">
-						<label className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/40">
-							Message
-						</label>
-						<textarea
-							name="message"
-							rows={5}
-							placeholder="What&apos;s on your mind?"
-							className="resize-none border-b border-cream/15 bg-transparent pb-3 text-[13px] font-extralight leading-relaxed tracking-wide text-cream placeholder-cream/20 outline-none transition-colors duration-300 focus:border-cream/40"
-						/>
-					</div>
+						{/* Submit row */}
+						<div className="flex items-center justify-between pt-2">
+							{/* Character count hint */}
+							<span
+								className={`text-[10px] font-light tracking-[0.2em] transition-colors duration-300 ${
+									fields.message.length > 10
+										? "text-cream/30"
+										: "text-transparent"
+								}`}
+							>
+								{fields.message.length} chars
+							</span>
 
-					<div className="flex items-center gap-4 pt-2">
-						<div className="h-px flex-1 bg-cream/10" />
-						<button
-							type="submit"
-							className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/50 transition-colors duration-300 hover:text-cream"
-						>
-							Send message
-						</button>
-					</div>
-				</form>
+							<button
+								type="submit"
+								disabled={status === "submitting"}
+								className="submit-btn group relative overflow-hidden border border-cream/10 px-8 py-3.5 text-[11px] font-light uppercase tracking-[0.3em] text-cream/60 transition-all duration-500 hover:border-amber/40 hover:text-cream disabled:opacity-40"
+							>
+								{/* Sweep fill on hover */}
+								<span className="absolute inset-0 -translate-x-full bg-amber/5 transition-transform duration-500 ease-out group-hover:translate-x-0" />
+
+								<span className="relative flex items-center gap-3">
+									{status === "submitting" ? (
+										<>
+											<span
+												className="inline-block h-3 w-3 rounded-full border border-cream/30"
+												style={{
+													borderTopColor: "var(--palette-amber)",
+													animation: "spin 0.8s linear infinite",
+												}}
+											/>
+											Sending
+										</>
+									) : (
+										<>
+											Send message
+											<svg
+												viewBox="0 0 16 16"
+												fill="none"
+												className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"
+											>
+												<title>Arrow</title>
+												<path
+													d="M3 8h10M9 4l4 4-4 4"
+													stroke="currentColor"
+													strokeWidth="1.2"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												/>
+											</svg>
+										</>
+									)}
+								</span>
+							</button>
+						</div>
+					</form>
+				)}
+
+				{/* ─── ALTERNATE CONTACT ─── */}
+				<div
+					className="mt-20 border-t border-cream/8 pt-10"
+					style={{
+						animation: "fadeSlideUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
+					}}
+				>
+					<p className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/25">
+						Or reach out directly
+					</p>
+					<a
+						href="mailto:hello@sleepyweirdo.com"
+						className="mt-3 inline-block font-heading text-xl font-light italic text-cream/50 transition-colors duration-300 hover:text-cream"
+					>
+						hello@sleepyweirdo.com
+					</a>
+				</div>
 			</div>
 
 			{/* ─── BOTTOM BAR ─── */}
@@ -88,6 +456,32 @@ export default function Contact() {
 					Back to home
 				</Link>
 			</div>
+
+			<style>{`
+				@keyframes fadeSlideUp {
+					from {
+						opacity: 0;
+						transform: translateY(18px);
+					}
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+
+				@keyframes drawCheck {
+					from {
+						stroke-dashoffset: 24;
+					}
+					to {
+						stroke-dashoffset: 0;
+					}
+				}
+
+				@keyframes spin {
+					to { transform: rotate(360deg); }
+				}
+			`}</style>
 		</main>
 	);
 }
