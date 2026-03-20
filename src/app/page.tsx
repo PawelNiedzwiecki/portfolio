@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = {
+	title: `${SITE_NAME} — Photography`,
+	description:
+		"Photography portfolio of Pawel Niedzwiecki — landscapes, portraits, street and travel photography based in London.",
+	alternates: { canonical: SITE_URL },
+	openGraph: {
+		title: `${SITE_NAME} — Photography`,
+		description:
+			"Landscapes, portraits, street and travel photography based in London.",
+		url: SITE_URL,
+		images: [{ url: OG_IMAGE, width: 1200, height: 630 }],
+	},
+};
 
 export default function Home() {
 	return (

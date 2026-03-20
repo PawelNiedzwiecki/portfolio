@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+export const metadata: Metadata = {
+	title: "About",
+	description:
+		"Pawel Niedzwiecki is a photographer based in London, drawn to quiet landscapes, fleeting light, and contemplative documentary work shot mostly on film.",
+	alternates: { canonical: `${SITE_URL}/about` },
+	openGraph: {
+		title: `About — ${SITE_NAME}`,
+		description:
+			"Pawel Niedzwiecki is a photographer based in London, drawn to quiet landscapes, fleeting light, and contemplative documentary work shot mostly on film.",
+		url: `${SITE_URL}/about`,
+	},
+};
 
 export default function About() {
 	return (

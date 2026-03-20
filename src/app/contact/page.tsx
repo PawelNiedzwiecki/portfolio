@@ -1,5 +1,10 @@
 "use client";
 
+// Note: metadata must be exported from a Server Component.
+// This page is a Client Component — metadata is defined in a separate
+// layout or via a sibling server component pattern. The title/description
+// below is applied via the root layout template.
+
 import { ArrowRightIcon, CheckIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";

@@ -1,12 +1,45 @@
 import fs from "node:fs";
 import path from "node:path";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProjectBySlug, projects } from "@/lib/projects";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import { GalleryGrid } from "../../components/GalleryGrid";
 
 export async function generateStaticParams() {
 	return projects.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const project = getProjectBySlug(slug);
+	if (!project) return {};
+
+	const url = `${SITE_URL}/work/${slug}`;
+	const ogImage = `${SITE_URL}${project.cover}`;
+
+	return {
+		title: project.title,
+		description: project.description,
+		alternates: { canonical: url },
+		openGraph: {
+			title: `${project.title} — ${SITE_NAME}`,
+			description: project.description,
+			url,
+			images: [{ url: ogImage, width: 1200, height: 800, alt: project.title }],
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: `${project.title} — ${SITE_NAME}`,
+			description: project.description,
+			images: [ogImage],
+		},
+	};
 }
 
 function getProjectPhotos(slug: string) {
@@ -37,8 +70,31 @@ export default async function ProjectPage({
 	const lastWord = words.pop();
 	const restOfTitle = words.join(" ");
 
+	const jsonLd = {
+		"@context": "https://schema.org",
+		"@type": "ImageGallery",
+		name: project.title,
+		description: project.description,
+		url: `${SITE_URL}/work/${slug}`,
+		author: {
+			"@type": "Person",
+			name: SITE_NAME,
+			url: SITE_URL,
+		},
+		image: photos.slice(0, 6).map((p) => ({
+			"@type": "ImageObject",
+			url: `${SITE_URL}${p.src}`,
+			name: p.alt,
+		})),
+	};
+
 	return (
 		<main className="min-h-screen bg-bg text-cream">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+
 			{/* ─── HEADER ─── */}
 			<div className="px-8 pb-0 pt-40 md:px-12">
 				<Link

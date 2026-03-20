@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import { projects } from "@/lib/projects";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 import ProjectCard from "../components/ProjectCard";
+
+export const metadata: Metadata = {
+	title: "Work",
+	description:
+		"Selected photography series by Pawel Niedzwiecki — landscape, portrait, street, and travel work made on film in London and beyond.",
+	alternates: { canonical: `${SITE_URL}/work` },
+	openGraph: {
+		title: `Work — ${SITE_NAME}`,
+		description:
+			"Selected photography series — landscape, portrait, street, and travel work made on film in London and beyond.",
+		url: `${SITE_URL}/work`,
+	},
+};
 
 export default function Work() {
 	return (
