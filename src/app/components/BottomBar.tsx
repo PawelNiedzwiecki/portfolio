@@ -1,6 +1,6 @@
 "use client";
 
-import { InstagramLogoIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, InstagramLogoIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,7 +11,7 @@ export default function BottomBar() {
 	const isDetailPage = pathname.startsWith("/work/") && pathname !== "/work";
 
 	return (
-		<div className="fixed bottom-0 left-0 right-0 z-30 flex items-end justify-between px-8 pb-8 md:px-12">
+		<div className="relative flex items-end justify-between px-8 pb-8 md:px-12">
 			{/* Left: location + Instagram */}
 			<div className="flex items-center gap-4">
 				<div className="flex items-center gap-2">
@@ -53,8 +53,9 @@ export default function BottomBar() {
 			) : isMainPage ? (
 				<Link
 					href="/"
-					className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
+					className="flex items-center gap-2 text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
 				>
+					<ArrowLeftIcon size={12} weight="light" />
 					Back to home
 				</Link>
 			) : (

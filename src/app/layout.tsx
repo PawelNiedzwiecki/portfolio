@@ -42,13 +42,13 @@ export default function RootLayout({
 				/>
 			</head>
 			<body
-				className={`${cormorant.variable} ${jost.variable} font-body antialiased`}
+				className={`${cormorant.variable} ${jost.variable} font-body antialiased flex min-h-screen flex-col`}
 			>
 				<Nav />
+				<div className="flex-1">{children}</div>
 				<BottomBar />
 				<Analytics />
 				<SpeedInsights />
-				{children}
 			</body>
 		</html>
 	);
