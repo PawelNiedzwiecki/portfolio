@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "@phosphor-icons/react";
+import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
@@ -39,9 +39,9 @@ export default function ThemeToggle() {
 			className="text-cream/40 transition-colors duration-300 hover:text-cream/80"
 		>
 			{theme === "dark" ? (
-				<Sun size={14} weight="light" />
+				<SunIcon size={14} weight="light" />
 			) : (
-				<Moon size={14} weight="light" />
+				<MoonIcon size={14} weight="light" />
 			)}
 		</button>
 	);

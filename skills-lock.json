@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "frontend-ui-animator": {
+      "source": "julianromli/ai-skills",
+      "sourceType": "github",
+      "computedHash": "8d96d8cb9c3aeea2227a039fa6eb573d6cde6cc27897a0a5ddee7f348c076496"
+    },
+    "nextjs-app-router-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "d2f0a7065f7418fdb3ae88559f1f1426f40c26f2b5aebcd394797418d4bb3b04"
+    },
+    "tailwind-design-system": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "7ff2f4650597e98ca4cd8f01231fb432ab4d187d6b12e641485aa871a04448cc"
+    }
+  }
+}

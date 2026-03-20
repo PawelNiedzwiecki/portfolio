@@ -26,51 +26,30 @@ export default function Home() {
 			{/* ─── HERO CONTENT ─── */}
 			<div className="relative z-20 flex h-full flex-col items-center justify-center text-center">
 				{/* Eyebrow */}
-				<p className="text-[10px] font-light uppercase tracking-[0.35em] text-amber">
+				<p className="animate-fade-slide-up delay-100 text-[10px] font-light uppercase tracking-[0.35em] text-amber">
 					Photography · London
 				</p>
 
 				{/* Main heading */}
-				<h1 className="mt-5 font-heading text-6xl font-light leading-none tracking-wide text-cream md:text-8xl">
+				<h1 className="animate-fade-slide-up delay-200 mt-5 font-heading text-6xl font-light leading-none tracking-wide text-cream md:text-8xl">
 					Sleepy / <span className="italic">Weirdo</span>
 				</h1>
 
 				{/* Tagline */}
-				<p className="mt-4 text-[11px] font-extralight uppercase tracking-[0.3em] text-cream/50">
+				<p className="animate-fade-slide-up delay-300 mt-4 text-[11px] font-extralight uppercase tracking-[0.3em] text-cream/50">
 					Landscapes &amp; quiet moments
 				</p>
 
 				{/* Vertical separator */}
-				<div className="mt-8 h-10 w-px bg-cream/20" />
+				<div className="animate-fade-in delay-500 mt-8 h-10 w-px bg-cream/20" />
 
 				{/* CTA */}
 				<Link
-					href="#work"
-					className="mt-6 text-[11px] font-light uppercase tracking-[0.25em] text-cream/60 transition-colors duration-300 hover:text-cream"
+					href="/work"
+					className="animate-fade-slide-up delay-600 mt-6 text-[11px] font-light uppercase tracking-[0.25em] text-cream/60 transition-colors duration-300 hover:text-cream"
 				>
 					View work
 				</Link>
-			</div>
-
-			{/* ─── BOTTOM BAR ─── */}
-			<div className="absolute bottom-0 left-0 right-0 z-30 flex items-end justify-between px-8 pb-8 md:px-12">
-				{/* Left: location */}
-				<div className="flex items-center gap-2">
-					<span className="inline-block h-1.5 w-1.5 rounded-full bg-olive" />
-					<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
-						London, United Kingdom
-					</span>
-				</div>
-
-				{/* Centre: animated scroll line */}
-				<div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-					<div className="scroll-line h-8 w-px bg-gradient-to-b from-amber/0 via-amber to-amber/0" />
-				</div>
-
-				{/* Right: photo count */}
-				<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
-					387 photos
-				</span>
 			</div>
 		</main>
 	);
