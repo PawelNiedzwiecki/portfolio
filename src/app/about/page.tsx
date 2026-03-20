@@ -50,6 +50,24 @@ export default function About() {
 								Get in touch
 							</Link>
 						</div>
+
+						{/* Other projects */}
+						<div className="animate-fade-slide-up delay-700 mt-8 border-t border-cream/10 pt-8">
+							<p className="mb-4 text-[10px] font-light uppercase tracking-[0.35em] text-amber">
+								Other projects
+							</p>
+							<Link
+								href="https://whounfollowedu.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="group flex items-center gap-3"
+							>
+								<div className="h-px w-8 bg-amber/40 transition-all duration-300 group-hover:w-12 group-hover:bg-amber" />
+								<span className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/50 transition-colors duration-300 group-hover:text-cream">
+									whounfollowedu.com
+								</span>
+							</Link>
+						</div>
 					</div>
 
 					{/* Right: image */}
