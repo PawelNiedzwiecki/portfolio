@@ -52,19 +52,6 @@ export default function Error({
 					</Link>
 				</div>
 			</div>
-
-			{/* Bottom bar */}
-			<div className="absolute bottom-0 left-0 right-0 z-30 flex items-end justify-between px-8 pb-8 md:px-12">
-				<div className="flex items-center gap-2">
-					<span className="inline-block h-1.5 w-1.5 rounded-full bg-olive" />
-					<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
-						London, United Kingdom
-					</span>
-				</div>
-				<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
-					Sleepy / Weirdo
-				</span>
-			</div>
 		</main>
 	);
 }

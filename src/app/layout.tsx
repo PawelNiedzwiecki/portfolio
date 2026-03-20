@@ -2,6 +2,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Jost } from "next/font/google";
+import BottomBar from "./components/BottomBar";
 import Nav from "./components/Nav";
 import "./globals.css";
 
@@ -44,6 +45,7 @@ export default function RootLayout({
 				className={`${cormorant.variable} ${jost.variable} font-body antialiased`}
 			>
 				<Nav />
+				<BottomBar />
 				<Analytics />
 				<SpeedInsights />
 				{children}

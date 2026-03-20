@@ -50,16 +50,11 @@ describe("Nav", () => {
 		);
 	});
 
-	it("renders the Instagram link", () => {
+	it("renders the home link with the author name", () => {
 		render(<Nav />);
-		const instagram = screen.getByRole("link", { name: "@sleepy_weirdo" });
-		expect(instagram).toBeInTheDocument();
-		expect(instagram).toHaveAttribute(
-			"href",
-			"https://instagram.com/sleepy_weirdo",
-		);
-		expect(instagram).toHaveAttribute("target", "_blank");
-		expect(instagram).toHaveAttribute("rel", "noopener noreferrer");
+		const homeLink = screen.getByRole("link", { name: "Pawel Niedzwiecki" });
+		expect(homeLink).toBeInTheDocument();
+		expect(homeLink).toHaveAttribute("href", "/");
 	});
 
 	it("renders the ThemeToggle", () => {

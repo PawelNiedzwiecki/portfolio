@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowRightIcon, CheckIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 
@@ -264,25 +265,13 @@ export default function Contact() {
 						{/* Check mark */}
 						<div className="relative flex h-14 w-14 items-center justify-center">
 							<div className="absolute inset-0 rounded-full border border-amber/30" />
-							<svg
-								viewBox="0 0 24 24"
-								fill="none"
-								className="h-5 w-5 text-amber"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							>
-								<title>Success</title>
-								<path
-									d="M5 12l4 4L19 7"
-									stroke="currentColor"
-									strokeWidth="1.5"
-									style={{
-										strokeDasharray: 24,
-										strokeDashoffset: 0,
-										animation: "drawCheck 0.5s 0.2s ease-out both",
-									}}
-								/>
-							</svg>
+							<CheckIcon
+								size={20}
+								weight="light"
+								className="text-amber"
+								style={{ animation: "checkAppear 0.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both" }}
+								aria-hidden="true"
+							/>
 						</div>
 
 						<div>
@@ -399,20 +388,12 @@ export default function Contact() {
 									) : (
 										<>
 											Send message
-											<svg
-												viewBox="0 0 16 16"
-												fill="none"
-												className="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5"
-											>
-												<title>Arrow</title>
-												<path
-													d="M3 8h10M9 4l4 4-4 4"
-													stroke="currentColor"
-													strokeWidth="1.2"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-												/>
-											</svg>
+											<ArrowRightIcon
+												size={12}
+												weight="light"
+												className="transition-transform duration-300 group-hover:translate-x-0.5"
+												aria-hidden="true"
+											/>
 										</>
 									)}
 								</span>
@@ -440,22 +421,6 @@ export default function Contact() {
 				</div>
 			</div>
 
-			{/* ─── BOTTOM BAR ─── */}
-			<div className="fixed bottom-0 left-0 right-0 z-30 flex items-end justify-between px-8 pb-8 md:px-12">
-				<div className="flex items-center gap-2">
-					<span className="inline-block h-1.5 w-1.5 rounded-full bg-olive" />
-					<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
-						London, United Kingdom
-					</span>
-				</div>
-
-				<Link
-					href="/"
-					className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
-				>
-					Back to home
-				</Link>
-			</div>
 
 			<style>{`
 				@keyframes fadeSlideUp {
@@ -469,12 +434,14 @@ export default function Contact() {
 					}
 				}
 
-				@keyframes drawCheck {
+				@keyframes checkAppear {
 					from {
-						stroke-dashoffset: 24;
+						opacity: 0;
+						transform: scale(0.5);
 					}
 					to {
-						stroke-dashoffset: 0;
+						opacity: 1;
+						transform: scale(1);
 					}
 				}
 
