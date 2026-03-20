@@ -22,9 +22,8 @@ export default function Work() {
 	const photos = getPhotos();
 	return (
 		<main className="min-h-screen bg-bg text-cream">
-			{/* ─── CONTENT ─── */}
-			<div className="mx-auto max-w-6xl px-8 pb-24 pt-40 md:px-12">
-				{/* Eyebrow */}
+			{/* ─── HEADER ─── */}
+			<div className="px-8 pb-0 pt-40 md:px-12">
 				<p className="animate-fade-slide-up delay-100 text-[10px] font-light uppercase tracking-[0.35em] text-amber">
 					Work
 				</p>
@@ -33,10 +32,11 @@ export default function Work() {
 					Selected <span className="italic">photographs</span>
 				</h1>
 
-				{/* Divider */}
 				<div className="animate-divider-grow delay-300 mt-10 h-px w-16 bg-amber/40" />
+			</div>
 
-				{/* Photo grid */}
+			{/* ─── FULL-WIDTH GALLERY ─── */}
+			<div className="px-3 pb-24 md:px-4">
 				<GalleryGrid photos={photos} />
 			</div>
 		</main>
