@@ -22,7 +22,7 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-	title: "Sleepy Weirdo — Photography",
+	title: "Pawel Niedzwiecki — Photography",
 	description:
 		"Landscapes & quiet moments. Photography portfolio based in London.",
 };

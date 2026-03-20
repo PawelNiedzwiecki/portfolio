@@ -9,14 +9,12 @@ type FieldState = "idle" | "focused" | "filled" | "error";
 interface Field {
 	name: string;
 	email: string;
-	subject: string;
 	message: string;
 }
 
 interface FieldErrors {
 	name?: string;
 	email?: string;
-	subject?: string;
 	message?: string;
 }
 
@@ -29,7 +27,7 @@ function FloatingInput({
 	error,
 	autoComplete,
 }: {
-	id: keyof Field;
+	id: string;
 	label: string;
 	type?: string;
 	value: string;
@@ -109,7 +107,7 @@ function FloatingTextarea({
 	onChange,
 	error,
 }: {
-	id: keyof Field;
+	id: string;
 	label: string;
 	value: string;
 	onChange: (val: string) => void;
@@ -193,7 +191,6 @@ export default function Contact() {
 	const [fields, setFields] = useState<Field>({
 		name: "",
 		email: "",
-		subject: "",
 		message: "",
 	});
 	const [errors, setErrors] = useState<FieldErrors>({});
@@ -202,7 +199,7 @@ export default function Contact() {
 	const setField = useCallback(
 		(key: keyof Field) => (val: string) => {
 			setFields((prev) => ({ ...prev, [key]: val }));
-			if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
+			if (key in errors) setErrors((prev) => ({ ...prev, [key]: undefined }));
 		},
 		[errors],
 	);
@@ -222,15 +219,21 @@ export default function Contact() {
 		e.preventDefault();
 		if (!validate()) return;
 		setStatus("submitting");
-		// Simulate network delay
-		await new Promise((r) => setTimeout(r, 1400));
+		try {
+			await fetch("/api/contact", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(fields),
+			});
+		} catch {
+			// API not yet wired — fall through
+		}
 		setStatus("sent");
 	};
 
 	return (
 		<main className="min-h-screen bg-bg text-cream">
 			<div className="mx-auto max-w-2xl px-8 pb-32 pt-40 md:px-12">
-
 				{/* ─── HEADER ─── */}
 				<div
 					className="contact-header"
@@ -269,7 +272,10 @@ export default function Contact() {
 								size={20}
 								weight="light"
 								className="text-amber"
-								style={{ animation: "checkAppear 0.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both" }}
+								style={{
+									animation:
+										"checkAppear 0.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both",
+								}}
 								aria-hidden="true"
 							/>
 						</div>
@@ -295,7 +301,7 @@ export default function Contact() {
 								type="button"
 								onClick={() => {
 									setStatus("idle");
-									setFields({ name: "", email: "", subject: "", message: "" });
+									setFields({ name: "", email: "", message: "" });
 								}}
 								className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
 							>
@@ -333,15 +339,6 @@ export default function Contact() {
 								autoComplete="email"
 							/>
 						</div>
-
-						{/* Subject */}
-						<FloatingInput
-							id="subject"
-							label="Subject — commission, collaboration, other"
-							value={fields.subject}
-							onChange={setField("subject")}
-							error={errors.subject}
-						/>
 
 						{/* Message */}
 						<FloatingTextarea
@@ -406,21 +403,21 @@ export default function Contact() {
 				<div
 					className="mt-20 border-t border-cream/8 pt-10"
 					style={{
-						animation: "fadeSlideUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
+						animation:
+							"fadeSlideUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
 					}}
 				>
 					<p className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/25">
 						Or reach out directly
 					</p>
 					<a
-						href="mailto:hello@sleepyweirdo.com"
+						href="mailto:hi@pawelniedzwiecki.com"
 						className="mt-3 inline-block font-heading text-xl font-light italic text-cream/50 transition-colors duration-300 hover:text-cream"
 					>
-						hello@sleepyweirdo.com
+						hi@pawelniedzwiecki.com
 					</a>
 				</div>
 			</div>
-
 
 			<style>{`
 				@keyframes fadeSlideUp {

@@ -32,7 +32,7 @@ export default function Home() {
 
 				{/* Main heading */}
 				<h1 className="animate-fade-slide-up delay-200 mt-5 font-heading text-6xl font-light leading-none tracking-wide text-cream md:text-8xl">
-					Sleepy / <span className="italic">Weirdo</span>
+					Pawel <span className="italic">Niedzwiecki</span>
 				</h1>
 
 				{/* Tagline */}

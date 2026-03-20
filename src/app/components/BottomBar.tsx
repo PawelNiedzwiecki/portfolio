@@ -8,6 +8,7 @@ export default function BottomBar() {
 	const pathname = usePathname();
 	const isHome = pathname === "/";
 	const isMainPage = ["/work", "/about", "/contact"].includes(pathname);
+	const isDetailPage = pathname.startsWith("/work/") && pathname !== "/work";
 
 	return (
 		<div className="fixed bottom-0 left-0 right-0 z-30 flex items-end justify-between px-8 pb-8 md:px-12">
@@ -42,6 +43,13 @@ export default function BottomBar() {
 				<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
 					387 photos
 				</span>
+			) : isDetailPage ? (
+				<Link
+					href="/work"
+					className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
+				>
+					Back to work
+				</Link>
 			) : isMainPage ? (
 				<Link
 					href="/"
@@ -51,7 +59,7 @@ export default function BottomBar() {
 				</Link>
 			) : (
 				<span className="text-[10px] font-extralight uppercase tracking-[0.2em] text-cream/40">
-					Sleepy / Weirdo
+					Pawel Niedzwiecki
 				</span>
 			)}
 		</div>
