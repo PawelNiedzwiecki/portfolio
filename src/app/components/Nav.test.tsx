@@ -21,6 +21,10 @@ vi.mock("./ThemeToggle", () => ({
 	default: () => <button type="button">Toggle theme</button>,
 }));
 
+vi.mock("next/navigation", () => ({
+	usePathname: () => "/",
+}));
+
 afterEach(() => {
 	cleanup();
 	vi.restoreAllMocks();
@@ -64,10 +68,10 @@ describe("Nav", () => {
 		).toBeInTheDocument();
 	});
 
-	it("is a fixed nav element", () => {
+	it("is an absolute nav element", () => {
 		render(<Nav />);
 		const nav = screen.getByRole("navigation");
 		expect(nav).toBeInTheDocument();
-		expect(nav.className).toContain("fixed");
+		expect(nav.className).toContain("absolute");
 	});
 });

@@ -3,7 +3,7 @@ import ThemeToggle from "./ThemeToggle";
 
 export default function Nav() {
 	return (
-		<nav className="animate-fade-slide-down delay-0 fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12">
+		<nav className="animate-fade-slide-down delay-0 absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 md:px-12">
 			<div className="flex items-center gap-8">
 				<Link
 					href="/"
