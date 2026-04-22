@@ -1,11 +1,6 @@
 "use client";
 
-// Note: metadata must be exported from a Server Component.
-// This page is a Client Component — metadata is defined in a separate
-// layout or via a sibling server component pattern. The title/description
-// below is applied via the root layout template.
-
-import { ArrowRightIcon, CheckIcon } from "@phosphor-icons/react";
+import { CheckIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 
@@ -49,14 +44,14 @@ function FloatingInput({
 	const hasError = !!error;
 
 	return (
-		<div className="contact-field group relative">
+		<div className="group relative">
 			<div
-				className={`relative border-b transition-all duration-500 ${
+				className={`relative border-b transition-all duration-300 ${
 					hasError
-						? "border-red-400/60"
+						? "border-red-500/60"
 						: state === "focused"
-							? "border-amber"
-							: "border-cream/15 group-hover:border-cream/25"
+							? "border-fg"
+							: "border-fg/40 group-hover:border-fg/70"
 				}`}
 			>
 				<label
@@ -67,10 +62,10 @@ function FloatingInput({
 							: "top-4 text-[12px] tracking-[0.2em]"
 					} font-light uppercase ${
 						hasError
-							? "text-red-400/70"
+							? "text-red-500/70"
 							: state === "focused"
-								? "text-amber"
-								: "text-cream/30"
+								? "text-fg"
+								: "text-fg/60"
 					}`}
 				>
 					{label}
@@ -84,22 +79,18 @@ function FloatingInput({
 					onFocus={handleFocus}
 					onBlur={handleBlur}
 					onChange={(e) => onChange(e.target.value)}
-					className="w-full bg-transparent pb-3 pt-6 text-[13px] font-extralight tracking-wide text-cream outline-none placeholder-transparent"
+					className="w-full bg-transparent pb-3 pt-6 text-[13px] tracking-wide text-fg outline-none placeholder-transparent"
 				/>
-
-				{/* Focus line sweep */}
 				<span
-					className={`absolute bottom-0 left-0 h-px bg-amber transition-all duration-500 ease-out ${
+					className={`absolute bottom-0 left-0 h-px bg-fg transition-all duration-300 ease-out ${
 						state === "focused" ? "w-full" : "w-0"
 					}`}
 				/>
 			</div>
-
-			{/* Error message */}
 			<div
 				className={`overflow-hidden transition-all duration-300 ${hasError ? "max-h-6 pt-1.5" : "max-h-0"}`}
 			>
-				<p className="text-[10px] tracking-[0.15em] text-red-400/70">{error}</p>
+				<p className="text-[10px] tracking-[0.15em] text-red-500/70">{error}</p>
 			</div>
 		</div>
 	);
@@ -126,7 +117,6 @@ function FloatingTextarea({
 
 	const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		onChange(e.target.value);
-		// Auto-grow
 		const el = e.target;
 		el.style.height = "auto";
 		el.style.height = `${el.scrollHeight}px`;
@@ -136,14 +126,14 @@ function FloatingTextarea({
 	const hasError = !!error;
 
 	return (
-		<div className="contact-field group relative">
+		<div className="group relative">
 			<div
-				className={`relative border-b transition-all duration-500 ${
+				className={`relative border-b transition-all duration-300 ${
 					hasError
-						? "border-red-400/60"
+						? "border-red-500/60"
 						: state === "focused"
-							? "border-amber"
-							: "border-cream/15 group-hover:border-cream/25"
+							? "border-fg"
+							: "border-fg/40 group-hover:border-fg/70"
 				}`}
 			>
 				<label
@@ -154,10 +144,10 @@ function FloatingTextarea({
 							: "top-4 text-[12px] tracking-[0.2em]"
 					} font-light uppercase ${
 						hasError
-							? "text-red-400/70"
+							? "text-red-500/70"
 							: state === "focused"
-								? "text-amber"
-								: "text-cream/30"
+								? "text-fg"
+								: "text-fg/60"
 					}`}
 				>
 					{label}
@@ -172,21 +162,18 @@ function FloatingTextarea({
 					onBlur={handleBlur}
 					onChange={handleChange}
 					style={{ minHeight: "52px", resize: "none", overflow: "hidden" }}
-					className="w-full bg-transparent pb-3 pt-6 text-[13px] font-extralight leading-relaxed tracking-wide text-cream outline-none placeholder-transparent"
+					className="w-full bg-transparent pb-3 pt-6 text-[13px] leading-relaxed tracking-wide text-fg outline-none placeholder-transparent"
 				/>
-
-				{/* Focus line sweep */}
 				<span
-					className={`absolute bottom-0 left-0 h-px bg-amber transition-all duration-500 ease-out ${
+					className={`absolute bottom-0 left-0 h-px bg-fg transition-all duration-300 ease-out ${
 						state === "focused" ? "w-full" : "w-0"
 					}`}
 				/>
 			</div>
-
 			<div
 				className={`overflow-hidden transition-all duration-300 ${hasError ? "max-h-6 pt-1.5" : "max-h-0"}`}
 			>
-				<p className="text-[10px] tracking-[0.15em] text-red-400/70">{error}</p>
+				<p className="text-[10px] tracking-[0.15em] text-red-500/70">{error}</p>
 			</div>
 		</div>
 	);
@@ -231,65 +218,48 @@ export default function Contact() {
 				body: JSON.stringify(fields),
 			});
 		} catch {
-			// API not yet wired — fall through
+			// fall through
 		}
 		setStatus("sent");
 	};
 
 	return (
-		<main className="min-h-screen bg-bg text-cream">
-			<div className="mx-auto max-w-2xl px-8 pb-32 pt-40 md:px-12">
-				{/* ─── HEADER ─── */}
-				<div
-					className="contact-header"
-					style={{
-						animation: "fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
-					}}
-				>
-					<p className="text-[10px] font-light uppercase tracking-[0.35em] text-amber">
+		<main className="min-h-screen">
+			<div className="mx-auto max-w-2xl px-8 pb-32 pt-36 md:px-12">
+				<div>
+					<p className="text-[10px] font-light uppercase tracking-[0.35em] text-fg/40">
 						Contact
 					</p>
 
-					<h1 className="mt-5 font-heading text-5xl font-light leading-none tracking-wide text-cream md:text-7xl">
+					<h1 className="mt-4 font-heading text-5xl font-light leading-none tracking-wide text-fg md:text-7xl">
 						Let&apos;s <span className="italic">talk</span>
 					</h1>
 
-					<p className="mt-6 max-w-sm text-[13px] font-extralight leading-relaxed tracking-wide text-cream/50">
+					<p className="mt-6 max-w-sm text-[13px] font-light leading-relaxed tracking-wide text-fg/50">
 						For commissions, collaborations, or just to say hello — I&apos;m
 						always open to a good conversation.
 					</p>
 
-					<div className="mt-10 h-px w-16 bg-amber/40" />
+					<div className="mt-8 h-px w-12 bg-fg/15" />
 				</div>
 
-				{/* ─── FORM or SUCCESS ─── */}
 				{status === "sent" ? (
-					<div
-						className="mt-16 flex flex-col items-start gap-6"
-						style={{
-							animation: "fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both",
-						}}
-					>
-						{/* Check mark */}
+					<div className="mt-16 flex flex-col items-start gap-6">
 						<div className="relative flex h-14 w-14 items-center justify-center">
-							<div className="absolute inset-0 rounded-full border border-amber/30" />
+							<div className="absolute inset-0 rounded-full border border-fg/20" />
 							<CheckIcon
 								size={20}
 								weight="light"
-								className="text-amber"
-								style={{
-									animation:
-										"checkAppear 0.4s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both",
-								}}
+								className="text-fg/60"
 								aria-hidden="true"
 							/>
 						</div>
 
 						<div>
-							<p className="font-heading text-3xl font-light italic text-cream">
+							<p className="font-heading text-3xl font-light italic text-fg">
 								Message sent.
 							</p>
-							<p className="mt-3 text-[13px] font-extralight leading-relaxed tracking-wide text-cream/45">
+							<p className="mt-3 text-[13px] font-light leading-relaxed tracking-wide text-fg/45">
 								I&apos;ll get back to you as soon as possible. In the meantime,
 								feel free to browse my work.
 							</p>
@@ -297,8 +267,8 @@ export default function Contact() {
 
 						<div className="mt-4 flex items-center gap-8">
 							<Link
-								href="/work"
-								className="text-[11px] font-light uppercase tracking-[0.25em] text-amber/70 transition-colors duration-300 hover:text-amber"
+								href="/"
+								className="text-[11px] font-light uppercase tracking-[0.25em] text-fg/50 underline-offset-4 transition-colors duration-300 hover:text-fg hover:underline"
 							>
 								View work
 							</Link>
@@ -308,7 +278,7 @@ export default function Contact() {
 									setStatus("idle");
 									setFields({ name: "", email: "", message: "" });
 								}}
-								className="text-[11px] font-light uppercase tracking-[0.25em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
+								className="text-[11px] font-light uppercase tracking-[0.25em] text-fg/30 transition-colors duration-300 hover:text-fg/60"
 							>
 								Send another
 							</button>
@@ -319,12 +289,7 @@ export default function Contact() {
 						onSubmit={handleSubmit}
 						noValidate
 						className="mt-14 flex flex-col gap-10"
-						style={{
-							animation:
-								"fadeSlideUp 0.7s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both",
-						}}
 					>
-						{/* Row: Name + Email */}
 						<div className="grid gap-10 sm:grid-cols-2">
 							<FloatingInput
 								id="name"
@@ -345,7 +310,6 @@ export default function Contact() {
 							/>
 						</div>
 
-						{/* Message */}
 						<FloatingTextarea
 							id="message"
 							label="Your message"
@@ -354,70 +318,38 @@ export default function Contact() {
 							error={errors.message}
 						/>
 
-						{/* Submit row */}
-						<div className="flex items-center justify-between pt-2">
-							{/* Character count hint */}
-							<span
-								className={`text-[10px] font-light tracking-[0.2em] transition-colors duration-300 ${
-									fields.message.length > 10
-										? "text-cream/30"
-										: "text-transparent"
-								}`}
-							>
-								{fields.message.length} chars
-							</span>
-
+						<div className="flex items-center justify-end pt-2">
 							<button
 								type="submit"
 								disabled={status === "submitting"}
-								className="submit-btn group relative overflow-hidden border border-cream/10 px-8 py-3.5 text-[11px] font-light uppercase tracking-[0.3em] text-cream/60 transition-all duration-500 hover:border-amber/40 hover:text-cream disabled:opacity-40"
+								className="border border-fg/15 px-8 py-3.5 text-[11px] font-light uppercase tracking-[0.3em] text-fg/50 transition-all duration-300 hover:border-fg/40 hover:text-fg disabled:opacity-40"
 							>
-								{/* Sweep fill on hover */}
-								<span className="absolute inset-0 -translate-x-full bg-amber/5 transition-transform duration-500 ease-out group-hover:translate-x-0" />
-
-								<span className="relative flex items-center gap-3">
-									{status === "submitting" ? (
-										<>
-											<span
-												className="inline-block h-3 w-3 rounded-full border border-cream/30"
-												style={{
-													borderTopColor: "var(--palette-amber)",
-													animation: "spin 0.8s linear infinite",
-												}}
-											/>
-											Sending
-										</>
-									) : (
-										<>
-											Send message
-											<ArrowRightIcon
-												size={12}
-												weight="light"
-												className="transition-transform duration-300 group-hover:translate-x-0.5"
-												aria-hidden="true"
-											/>
-										</>
-									)}
-								</span>
+								{status === "submitting" ? (
+									<span className="flex items-center gap-3">
+										<span
+											className="inline-block h-3 w-3 rounded-full border border-fg/30"
+											style={{
+												borderTopColor: "var(--palette-fg)",
+												animation: "spin 0.8s linear infinite",
+											}}
+										/>
+										Sending
+									</span>
+								) : (
+									"Send message"
+								)}
 							</button>
 						</div>
 					</form>
 				)}
 
-				{/* ─── ALTERNATE CONTACT ─── */}
-				<div
-					className="mt-20 border-t border-cream/8 pt-10"
-					style={{
-						animation:
-							"fadeSlideUp 0.7s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
-					}}
-				>
-					<p className="text-[10px] font-light uppercase tracking-[0.3em] text-cream/25">
+				<div className="mt-20 border-t border-fg/10 pt-10">
+					<p className="text-[10px] font-light uppercase tracking-[0.3em] text-fg/25">
 						Or reach out directly
 					</p>
 					<a
 						href="mailto:hi@pawelniedzwiecki.com"
-						className="mt-3 inline-block font-heading text-xl font-light italic text-cream/50 transition-colors duration-300 hover:text-cream"
+						className="mt-3 inline-block font-heading text-xl font-light italic text-fg/50 transition-colors duration-300 hover:text-fg"
 					>
 						hi@pawelniedzwiecki.com
 					</a>
@@ -425,28 +357,6 @@ export default function Contact() {
 			</div>
 
 			<style>{`
-				@keyframes fadeSlideUp {
-					from {
-						opacity: 0;
-						transform: translateY(18px);
-					}
-					to {
-						opacity: 1;
-						transform: translateY(0);
-					}
-				}
-
-				@keyframes checkAppear {
-					from {
-						opacity: 0;
-						transform: scale(0.5);
-					}
-					to {
-						opacity: 1;
-						transform: scale(1);
-					}
-				}
-
 				@keyframes spin {
 					to { transform: rotate(360deg); }
 				}

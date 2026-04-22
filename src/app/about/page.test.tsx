@@ -12,7 +12,10 @@ vi.mock("next/image", () => ({
 		alt: string;
 		fill?: boolean;
 		className?: string;
-	}) => <img src={src} alt={alt} {...props} />,
+	}) => (
+		// biome-ignore lint/performance/noImgElement: test mock
+		<img src={src} alt={alt} {...props} />
+	),
 }));
 
 vi.mock("next/link", () => ({
@@ -37,9 +40,7 @@ afterEach(() => {
 describe("About page", () => {
 	it("renders the page heading", () => {
 		render(<About />);
-		expect(
-			screen.getByRole("heading", { level: 1 }),
-		).toBeInTheDocument();
+		expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
 	});
 
 	it("renders the 'Get in touch' link pointing to /contact", () => {

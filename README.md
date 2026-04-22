@@ -1,4 +1,4 @@
-# Sleepy Weirdo — Photography Portfolio
+# Pawel Niedzwiecki — Photography Portfolio
 
 Personal photography portfolio for [@sleepy_weirdo](https://instagram.com/sleepy_weirdo). Landscapes & quiet moments, based in London.
 

@@ -17,33 +17,27 @@ vi.mock("next/link", () => ({
 	),
 }));
 
-vi.mock("./ThemeToggle", () => ({
-	default: () => <button type="button">Toggle theme</button>,
-}));
-
-vi.mock("next/navigation", () => ({
-	usePathname: () => "/",
-}));
-
 afterEach(() => {
 	cleanup();
 	vi.restoreAllMocks();
 });
 
 describe("Nav", () => {
-	it("renders all three nav links", () => {
+	it("renders About and Contact nav links", () => {
 		render(<Nav />);
-		expect(screen.getByRole("link", { name: "Work" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "Contact" })).toBeInTheDocument();
 	});
 
-	it("links point to the correct hrefs", () => {
+	it("does not render a Work link", () => {
 		render(<Nav />);
-		expect(screen.getByRole("link", { name: "Work" })).toHaveAttribute(
-			"href",
-			"/work",
-		);
+		expect(
+			screen.queryByRole("link", { name: "Work" }),
+		).not.toBeInTheDocument();
+	});
+
+	it("links point to correct hrefs", () => {
+		render(<Nav />);
 		expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
 			"href",
 			"/about",
@@ -59,13 +53,6 @@ describe("Nav", () => {
 		const homeLink = screen.getByRole("link", { name: "Pawel Niedzwiecki" });
 		expect(homeLink).toBeInTheDocument();
 		expect(homeLink).toHaveAttribute("href", "/");
-	});
-
-	it("renders the ThemeToggle", () => {
-		render(<Nav />);
-		expect(
-			screen.getByRole("button", { name: "Toggle theme" }),
-		).toBeInTheDocument();
 	});
 
 	it("is an absolute nav element", () => {

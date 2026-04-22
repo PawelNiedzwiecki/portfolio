@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProjectBySlug, projects } from "@/lib/projects";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
-import { GalleryGrid } from "../../components/GalleryGrid";
+import { GalleryGrid } from "../components/GalleryGrid";
 
 export async function generateStaticParams() {
 	return projects.map((p) => ({ slug: p.slug }));
@@ -20,7 +20,7 @@ export async function generateMetadata({
 	const project = getProjectBySlug(slug);
 	if (!project) return {};
 
-	const url = `${SITE_URL}/work/${slug}`;
+	const url = `${SITE_URL}/${slug}`;
 	const ogImage = `${SITE_URL}${project.cover}`;
 
 	return {
@@ -65,7 +65,6 @@ export default async function ProjectPage({
 
 	const photos = getProjectPhotos(project.slug);
 
-	// Split title: last word gets italic
 	const words = project.title.split(" ");
 	const lastWord = words.pop();
 	const restOfTitle = words.join(" ");
@@ -75,7 +74,7 @@ export default async function ProjectPage({
 		"@type": "ImageGallery",
 		name: project.title,
 		description: project.description,
-		url: `${SITE_URL}/work/${slug}`,
+		url: `${SITE_URL}/${slug}`,
 		author: {
 			"@type": "Person",
 			name: SITE_NAME,
@@ -89,51 +88,38 @@ export default async function ProjectPage({
 	};
 
 	return (
-		<main className="min-h-screen bg-bg text-cream">
+		<main className="min-h-screen">
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
 			/>
 
-			{/* ─── HEADER ─── */}
-			<div className="px-8 pb-0 pt-40 md:px-12">
+			<div className="mx-auto max-w-5xl px-8 pb-0 pt-36 md:px-16">
 				<Link
-					href="/work"
-					className="mb-6 inline-flex items-center gap-2 text-[10px] font-light uppercase tracking-[0.3em] text-cream/30 transition-colors duration-300 hover:text-cream/60"
+					href="/"
+					className="mb-8 inline-flex items-center gap-2 text-[10px] font-light uppercase tracking-[0.3em] text-fg/30 transition-colors duration-300 hover:text-fg/60"
 				>
 					← All work
 				</Link>
 
-				<p className="animate-fade-slide-up delay-100 text-[10px] font-light uppercase tracking-[0.35em] text-amber">
+				<p className="text-[10px] font-light uppercase tracking-[0.35em] text-fg/40">
 					{project.eyebrow} · {project.year}
 				</p>
 
-				<h1 className="animate-fade-slide-up delay-200 mt-5 font-heading text-5xl font-light leading-none tracking-wide text-cream md:text-7xl">
+				<h1 className="mt-3 font-heading text-3xl font-light leading-none tracking-wide text-fg md:text-4xl">
 					{restOfTitle} <span className="italic">{lastWord}</span>
 				</h1>
 
-				<div className="animate-divider-grow delay-300 mt-10 h-px w-16 bg-amber/40" />
+				<div className="mt-8 h-px w-12 bg-fg/15" />
 			</div>
 
-			{/* ─── DESCRIPTION ─── */}
-			<div className="mt-12 px-8 md:px-12">
-				<div className="flex items-start gap-16">
-					<p className="max-w-2xl text-[14px] font-extralight leading-relaxed text-cream/60 md:text-[15px]">
-						{project.description}
-					</p>
-					<div
-						className="hidden shrink-0 select-none md:block"
-						aria-hidden="true"
-					>
-						<span className="font-heading text-[50rem] leading-none text-cream/1 absolute -translate-y-1/2 opacity-100 right-0 top-1/2">
-							{photos.length}
-						</span>
-					</div>
-				</div>
+			<div className="mx-auto mt-10 max-w-5xl px-8 md:px-16">
+				<p className="max-w-2xl text-[14px] font-light leading-relaxed text-fg/55 md:text-[15px]">
+					{project.description}
+				</p>
 			</div>
 
-			{/* ─── GALLERY ─── */}
-			<div className="px-8 pb-32 md:px-12">
+			<div className="mx-auto max-w-5xl px-8 pb-24 md:px-16">
 				<GalleryGrid photos={photos} />
 			</div>
 		</main>

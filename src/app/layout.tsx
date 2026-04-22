@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import BottomBar from "./components/BottomBar";
 import Nav from "./components/Nav";
 import "./globals.css";
@@ -21,10 +21,10 @@ const cormorant = Cormorant_Garamond({
 	display: "swap",
 });
 
-const jost = Jost({
+const inter = Inter({
 	subsets: ["latin"],
-	weight: ["200", "300"],
-	variable: "--font-jost",
+	weight: ["300", "400"],
+	variable: "--font-inter",
 	display: "swap",
 });
 
@@ -71,7 +71,10 @@ const jsonLd = JSON.stringify([
 			addressLocality: "London",
 			addressCountry: "GB",
 		},
-		sameAs: ["https://instagram.com/sleepy_weirdo"],
+		sameAs: [
+			"https://instagram.com/sleepy_weirdo",
+			"https://www.linkedin.com/in/pawelniedzwiecki/",
+		],
 	},
 	{
 		"@context": "https://schema.org",
@@ -88,15 +91,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<head>
-				<script
-					dangerouslySetInnerHTML={{
-						__html: `(function(){var s=localStorage.getItem('theme');var d=window.matchMedia('(prefers-color-scheme: dark)').matches;if((s??( d?'dark':'light'))==='light')document.documentElement.setAttribute('data-theme','light');})();`,
-					}}
-				/>
-			</head>
 			<body
-				className={`${cormorant.variable} ${jost.variable} font-body antialiased flex min-h-screen flex-col`}
+				className={`${cormorant.variable} ${inter.variable} font-body antialiased flex min-h-screen flex-col`}
 			>
 				<script
 					type="application/ld+json"
